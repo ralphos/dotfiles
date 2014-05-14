@@ -7,9 +7,6 @@ export PATH="./bin:$PATH"
 
 eval "$(rbenv init -)"
 
-# Change the prompt for zsh
-PROMPT='%~'
-
 # Pretty print Json
 function pjson {
   if [ $# -gt 0 ];
