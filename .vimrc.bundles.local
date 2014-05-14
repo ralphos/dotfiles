@@ -1,0 +1,2 @@
+" Send specs to tmux
+Bundle 'jgdavey/tslime.vim'

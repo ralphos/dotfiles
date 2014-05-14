@@ -1,0 +1,27 @@
+# recommended by brew doctor
+export PATH='/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin'
+
+# Invoke commands without the bin/ prefix
+export PATH="./bin:$PATH"
+# export PATH="$HOME/.rbenv/bin:$PATH"
+
+eval "$(rbenv init -)"
+
+# Change the prompt for zsh
+PROMPT='%~'
+
+# Pretty print Json
+function pjson {
+  if [ $# -gt 0 ];
+    then
+    for arg in $@
+    do
+      if [ -f $arg ];
+        then
+        less $arg | python -m json.tool
+      else
+        echo "$arg" | python -m json.tool
+      fi
+    done
+  fi
+}

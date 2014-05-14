@@ -1,0 +1,35 @@
+" Set relative number on start up
+set relativenumber
+
+" Toggle between relative number and fixed line number
+function! NumberToggle()
+  if(&relativenumber ==1)
+    set number
+  else
+    set relativenumber
+  endif
+endfunction
+
+noremap <C-n> :call NumberToggle()<cr>
+
+" Edit another file in the same directory as the current file
+" uses expression to extract path from current file's path
+map <Leader>e :e <C-R>=escape(expand("%:p:h"),' ') . '/'<CR>
+map <Leader>sp :split <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
+map <Leader>v :vnew <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
+map <Leader>et :tabe <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
+
+" Use CtrlP for fuzzy search
+map <Leader>p :CtrlP<CR>
+
+" Awesome dynamic splits
+set winwidth=84
+set winheight=5
+set winminheight=5
+set winheight=999
+
+" Send rspec command to Tmux using Tslime
+let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
+
+" Show a redline at column 80
+set colorcolumn=80

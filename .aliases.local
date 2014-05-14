@@ -1,0 +1,19 @@
+# Bundle exec
+alias be="bundle exec"
+alias bes="bundle exec rspec"
+alias bake="bundle exec rake"
+
+# Productivity
+alias todo='$EDITOR ~/.todo'
+
+# Fire up redis
+alias start_redis='redis-server /usr/local/etc/redis.conf'
+
+# Foreman Start
+alias fs='foreman start'
+
+# Bundle install (installs gems at vendor/ruby)
+alias bi='bundle install --path vendor/bundle'
+
+# Filesystem
+alias ..="cd ../"
