@@ -22,7 +22,7 @@ Install
 
 Clone onto your laptop:
 
-    git clone git://github.com/croaky/dotfiles.git
+    git clone git://github.com/ralphos/dotfiles.git
 
 Install:
 
