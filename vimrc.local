@@ -33,3 +33,9 @@ let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
 
 " Show a redline at column 80
 set colorcolumn=80
+
+" Colors
+Plugin 'nanotech/jellybeans.vim'
+
+" Use the colorscheme from above
+colorscheme jellybeans
