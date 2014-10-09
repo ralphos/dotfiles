@@ -1,7 +1,8 @@
-# Bundle exec
-alias be="bundle exec"
-alias bes="bundle exec rspec"
-alias bake="bundle exec rake"
+# Migrate
+alias migrate='rake db:migrate && rake db:migrate RAILS_ENV=test'
+
+# Rspec
+alias s='rspec'
 
 # Productivity
 alias todo='$EDITOR ~/.todo'
