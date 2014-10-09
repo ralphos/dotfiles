@@ -1,17 +1,6 @@
 " Set relative number on start up
 set relativenumber
 
-" Toggle between relative number and fixed line number
-function! NumberToggle()
-  if(&relativenumber ==1)
-    set number
-  else
-    set relativenumber
-  endif
-endfunction
-
-noremap <C-n> :call NumberToggle()<cr>
-
 " Edit another file in the same directory as the current file
 " uses expression to extract path from current file's path
 map <Leader>e :e <C-R>=escape(expand("%:p:h"),' ') . '/'<CR>
@@ -22,20 +11,53 @@ map <Leader>et :tabe <C-R>=escape(expand("%:p:h"), ' ') . '/'<CR>
 " Use CtrlP for fuzzy search
 map <Leader>p :CtrlP<CR>
 
+" Shortcuts to open files
+map <Leader>fa :sp spec/factories.rb<CR>
+map <Leader>sc :sp db/schema.rb<cr>
+
+" Bundle Install to vendor/path using alias
+map <Leader>bi :!bundle install --path vendor/bundle<cr>
+
+" Save my right pinky
+map <Leader>w :w<cr>
+map <Leader>x :x<cr>
+
+map <Leader>t :w<cr>:call RunCurrentSpecFile()<CR>
+map <Leader>s :w<cr>:call RunNearestSpec()<CR>
+map <Leader>l :w<cr>:call RunLastSpec()<CR>
+
 " Awesome dynamic splits
 set winwidth=84
 set winheight=5
 set winminheight=5
 set winheight=999
 
-" Send rspec command to Tmux using Tslime
-let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
-
 " Show a redline at column 80
 set colorcolumn=80
 
-" Colors
-Plugin 'nanotech/jellybeans.vim'
-
 " Use the colorscheme from above
 colorscheme jellybeans
+
+" Send rspec command to Tmux using Tslime
+let g:rspec_command = 'call Send_to_Tmux("rspec {spec}\n")'
+
+" " Run specs using vim-dispatch
+" let g:rspec_command = "Dispatch rspec {spec}"
+
+nmap <Leader>c :Start rails console<CR>
+
+""""""""""""""""""""
+" Functions
+""""""""""""""""""""
+
+function! RenameFile()
+  let old_name = expand('%')
+  let new_name = input('New file name: ', expand('%'), 'file')
+  if new_name != '' && new_name != old_name
+    exec ':saveas ' . new_name
+    exec ':silent !rm ' . old_name
+    redraw!
+  endif
+endfunction
+
+map <Leader>n :call RenameFile()<cr>
