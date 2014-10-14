@@ -14,12 +14,13 @@ map <Leader>p :CtrlP<CR>
 map <Leader>fa :sp spec/factories.rb<CR>
 map <Leader>sc :sp db/schema.rb<cr>
 map <Leader>ro :sp config/routes.rb<cr>
+map <Leader>ge :sp Gemfile<cr>
 
 " Open in new tab
 map <Leader>tfa :tabe spec/factories.rb<CR>
 map <Leader>tsc :tabe db/schema.rb<cr>
 map <Leader>tro :tabe config/routes.rb<cr>
-
+map <Leader>tge :tabe Gemfile<cr>
 
 " Bundle Install to vendor/path using alias
 map <Leader>bi :!bundle install --path vendor/bundle<cr>
@@ -27,6 +28,7 @@ map <Leader>bi :!bundle install --path vendor/bundle<cr>
 " Save my right pinky
 map <Leader>w :w<cr>
 map <Leader>x :x<cr>
+map <Leader>q :q<cr>
 
 map <Leader>t :w<cr>:call RunCurrentSpecFile()<CR>
 map <Leader>s :w<cr>:call RunNearestSpec()<CR>

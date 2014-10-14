@@ -18,3 +18,7 @@ alias bi='bundle install --path vendor/bundle'
 
 # Filesystem
 alias ..="cd ../"
+
+# Rails
+alias rs='rails server'
+alias rc='rails console'
