@@ -1,3 +1,3 @@
-Plugin 'nanotech/jellybeans.vim'
-Bundle 'jgdavey/tslime.vim'
+Plug 'nanotech/jellybeans.vim'
+Plug 'jgdavey/tslime.vim'
 " Bundle 'tpope/vim-dispatch'
