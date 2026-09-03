@@ -25,8 +25,6 @@
   prune = true
 [rebase]
   autosquash = true
-[include]
-  path = ~/.gitconfig.local
 [diff]
   colorMoved = zebra
 [pretty]
@@ -34,3 +32,8 @@
 [user]
   name = Ralph Wintle
   email = wintle.ralph@gmail.com
+
+# Machine-specific overrides, not tracked in this repo. Kept LAST so that a
+# [user] or any other block in ~/.gitconfig.local wins over the values above.
+[include]
+  path = ~/.gitconfig.local
