@@ -3,6 +3,10 @@
 # Works on macOS via Homebrew and on Debian/Ubuntu via apt.
 set -e
 
+# This runs from a non-login sh, whose PATH lacks the places tools get
+# installed to. Add them so the "already installed?" checks below are honest.
+PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
+
 if command -v brew > /dev/null 2>&1; then
   # ~/.Brewfile only exists after rcup has run; fall back to the repo copy.
   brewfile="$HOME/.Brewfile"
@@ -35,7 +39,10 @@ if command -v apt-get > /dev/null 2>&1; then
     sudo apt-get install -y eza
   fi
   if ! command -v starship > /dev/null 2>&1; then
-    curl -sS https://starship.rs/install.sh | sh -s -- --yes
+    # Install into ~/.local/bin: no sudo, so it works without a tty.
+    # bashrc and path.zsh both put ~/.local/bin on PATH.
+    mkdir -p "$HOME/.local/bin"
+    curl -sS https://starship.rs/install.sh | sh -s -- --yes --bin-dir "$HOME/.local/bin"
   fi
   exit 0
 fi
