@@ -1,0 +1,31 @@
+#!/bin/sh
+# Install the CLI tools the shell config expects (starship, eza, bat).
+# Works on macOS via Homebrew and on Debian/Ubuntu via apt.
+set -e
+
+if command -v brew > /dev/null 2>&1; then
+  brew bundle --global
+  exit 0
+fi
+
+if command -v apt-get > /dev/null 2>&1; then
+  sudo apt-get update
+  # eza is not in Ubuntu 24.04's default repos; the gierens.de repo carries it.
+  sudo apt-get install -y rcm bat fzf tmux ripgrep silversearcher-ag gpg
+  if ! command -v eza > /dev/null 2>&1; then
+    sudo mkdir -p /etc/apt/keyrings
+    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc \
+      | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" \
+      | sudo tee /etc/apt/sources.list.d/gierens.list > /dev/null
+    sudo apt-get update
+    sudo apt-get install -y eza
+  fi
+  if ! command -v starship > /dev/null 2>&1; then
+    curl -sS https://starship.rs/install.sh | sh -s -- --yes
+  fi
+  exit 0
+fi
+
+echo "setup-shell-tools: no supported package manager found" >&2
+exit 1

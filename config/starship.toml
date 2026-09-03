@@ -1,0 +1,134 @@
+# Ported from typecraft-dev/dotfiles (starship/.config/starship.toml).
+# Vesper powerline: one peach hero, one mint secondary, a grey tail that fades into the background. REQUIRES A NERD FONT for the separators and
+# icons; iTerm2 uses it via the "Non-ASCII font" slot so normal text stays Monaco.
+
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+[](surface0)\
+$os\
+$username\
+$hostname\
+[](bg:peach fg:surface0)\
+$directory\
+[](fg:peach bg:green)\
+$git_branch\
+$git_status\
+[](fg:green bg:teal)\
+$ruby\
+$nodejs\
+$python\
+$golang\
+[](fg:teal bg:blue)\
+$docker_context\
+[](fg:blue bg:purple)\
+$time\
+[ ](fg:purple)\
+$line_break$character"""
+
+palette = 'vesper'
+
+[palettes.vesper]
+# Values come from the iTerm2 Vesper profile. Names are kept from Typecraft's
+# layout so the format string above stays recognisable; the comment says what
+# each one paints.
+surface0 = "#333333"   # left cap: os icon + username
+peach = "#ffc799"      # directory. The one bright warm block.
+green = "#99ffe4"      # git branch + status (Vesper mint)
+teal = "#2a2a2a"       # language versions, peach text on dark
+blue = "#222222"       # docker context
+purple = "#1c1c1c"     # time; right cap fades toward the #101010 background
+mantle = "#101010"     # ink on peach
+base = "#101010"       # ink on mint
+text = "#ffffff"
+soft = "#a0a0a0"
+muted = "#8b8b8b"
+red = "#ff8080"
+lavender = "#99ffe4"
+color_bg3 = "#222222"
+
+[os]
+disabled = false
+style = "bg:surface0 fg:text"
+
+[os.symbols]
+Macos = ""
+Ubuntu = "󰕈"
+Debian = "󰣚"
+Linux = "󰌽"
+
+[username]
+show_always = true
+style_user = "bg:surface0 fg:text"
+style_root = "bg:surface0 fg:text"
+format = '[ $user ]($style)'
+
+[hostname]
+ssh_only = true
+style = "bg:surface0 fg:text"
+format = "[@$hostname ]($style)"
+
+[directory]
+style = "fg:mantle bg:peach"
+format = "[ $path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = "󰝚 "
+"Pictures" = " "
+"Developer" = "󰲋 "
+
+[git_branch]
+symbol = ""
+style = "bg:teal"
+format = '[[ $symbol $branch ](fg:base bg:green)]($style)'
+
+[git_status]
+style = "bg:teal"
+format = '[[($all_status$ahead_behind )](fg:base bg:green)]($style)'
+
+[ruby]
+symbol = ""
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:peach bg:teal)]($style)'
+
+[nodejs]
+symbol = ""
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:peach bg:teal)]($style)'
+
+[golang]
+symbol = ""
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:peach bg:teal)]($style)'
+
+[python]
+symbol = ""
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:peach bg:teal)]($style)'
+
+[docker_context]
+symbol = ""
+style = "bg:mantle"
+format = '[[ $symbol( $context) ](fg:soft bg:blue)]($style)'
+
+[time]
+disabled = false
+time_format = "%R"
+style = "bg:peach"
+format = '[[  $time ](fg:muted bg:purple)]($style)'
+
+[line_break]
+disabled = false
+
+[character]
+disabled = false
+success_symbol = '[](bold fg:green)'
+error_symbol = '[](bold fg:red)'
+vimcmd_symbol = '[](bold fg:green)'
+vimcmd_replace_one_symbol = '[](bold fg:purple)'
+vimcmd_replace_symbol = '[](bold fg:purple)'
+vimcmd_visual_symbol = '[](bold fg:lavender)'

@@ -1,0 +1,15 @@
+# Cross-shell configuration. POSIX only — this is read by zsh on macOS and by
+# bash on the Ubuntu box, so do not use zsh-specific syntax here.
+#
+# zsh  loads it from ~/.zshrc.local
+# bash loads it from ~/.bashrc
+
+# Starship prompt. The config lives at ~/.config/starship.toml.
+# starship itself is shell-agnostic; only the init line differs per shell.
+if command -v starship > /dev/null 2>&1; then
+  if [ -n "$ZSH_VERSION" ]; then
+    eval "$(starship init zsh)"
+  elif [ -n "$BASH_VERSION" ]; then
+    eval "$(starship init bash)"
+  fi
+fi

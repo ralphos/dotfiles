@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+#
+# cwork — open a Claude workspace in tmux for the current directory.
+#
+# Layout:
+#   ┌─────────────┬───────┐
+#   │     vim     │       │
+#   ├─────────────┤claude │
+#   │    shell    │       │
+#   └─────────────┴───────┘
+#
+# Usage:
+#   cwork                 # uses basename of $PWD as session name
+#   cwork <session-name>  # explicit session name
+#
+# Re-running attaches to the existing session if one exists.
+
+set -e
+
+session_name="${1:-$(basename "$PWD" | tr . -)}"
+
+# Tunables
+SHELL_LINES=10     # height of the bottom shell pane (in lines, ~20% on most terminals)
+CLAUDE_WIDTH=35    # width of the right claude pane (in % of window width)
+
+attach_or_switch() {
+  if [ -z "$TMUX" ]; then
+    exec tmux attach -t "$session_name"
+  else
+    exec tmux switch-client -t "$session_name"
+  fi
+}
+
+# Session already exists? Just attach.
+if tmux has-session -t "=$session_name" 2>/dev/null; then
+  attach_or_switch
+fi
+
+# Determine the dimensions to build the layout at. If we're inside tmux,
+# use the current client's size; otherwise read directly from the TTY via
+# stty (tput often returns the default 80×24 in script contexts).
+if [ -n "$TMUX" ]; then
+  WIDTH="$(tmux display-message -p '#{client_width}')"
+  HEIGHT="$(tmux display-message -p '#{client_height}')"
+else
+  read -r HEIGHT WIDTH < <(stty size 2>/dev/null) || true
+  # Fallback if stty failed or returned nothing sensible.
+  if [ -z "$WIDTH" ] || [ "$WIDTH" -le 80 ]; then WIDTH=200; fi
+  if [ -z "$HEIGHT" ] || [ "$HEIGHT" -le 24 ]; then HEIGHT=60; fi
+fi
+
+# Build the layout in a detached new session at the real terminal size.
+tmux new-session -d -s "$session_name" -n "main" -c "$PWD" -x "$WIDTH" -y "$HEIGHT"
+
+# Capture the initial (only) pane's stable ID.
+left_pane="$(tmux list-panes -t "$session_name:main" -F '#{pane_id}')"
+
+# Split off claude on the right; capture its pane ID.
+claude_pane="$(tmux split-window -h -l "${CLAUDE_WIDTH}%" -t "$left_pane" -c "$PWD" -P -F '#{pane_id}')"
+
+# Back on the left pane, split off the shell underneath.
+shell_pane="$(tmux split-window -v -l "$SHELL_LINES" -t "$left_pane" -c "$PWD" -P -F '#{pane_id}')"
+
+# Force exact shell pane height (defensive — overrides any scaling weirdness).
+tmux resize-pane -t "$shell_pane" -y "$SHELL_LINES"
+
+tmux send-keys -t "$left_pane" "vim" C-m
+tmux send-keys -t "$claude_pane" "claude" C-m
+
+tmux select-pane -t "$left_pane"
+
+attach_or_switch

@@ -1,0 +1,67 @@
+# Unix
+alias ln="ln -v"
+alias mkdir="mkdir -p"
+alias e="$EDITOR"
+alias v="$VISUAL"
+
+# Pretty print the path
+alias path='echo -e ${PATH//:/\\n}'
+
+# Easier navigation: ..., ...., ....., and -
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+alias -- -="cd -"
+
+# Bundler
+alias b="bundle"
+
+# Rails
+alias migrate="bin/rails db:migrate db:rollback && bin/rails db:migrate db:test:prepare"
+alias m="migrate"
+alias s="rspec"
+alias rs="rails server"
+alias rc="rails console"
+alias fs="foreman start"
+
+# Docker Compose
+alias dc='docker compose'
+alias dcup='docker compose up'
+alias dcdown='docker compose down'
+alias dce='docker compose exec'
+
+# Docker Rails
+alias dcw='docker compose exec web'
+alias dcr='docker compose exec web rails'
+alias dcc='docker compose exec web rails console'
+alias dcm='docker compose exec web rails db:migrate'
+alias dct='docker compose exec web rails test'
+alias dcb='docker compose exec web bundle'
+alias dcy='docker compose exec web yarn'
+
+# Productivity
+alias todo="$EDITOR ~/.todo"
+
+# Modern replacements. Guarded so the aliases disappear on a machine that
+# does not have them yet, rather than breaking ls/cat.
+if command -v eza > /dev/null 2>&1; then
+  alias ls="eza --group-directories-first"
+  alias ll="eza -la --group-directories-first --git"
+  alias lt="eza --tree --level=2 --group-directories-first"
+else
+  alias ll="ls -al"
+fi
+
+if command -v bat > /dev/null 2>&1; then
+  alias cat="bat --paging=never"
+  alias less="bat"
+elif command -v batcat > /dev/null 2>&1; then
+  # Debian/Ubuntu ship bat as batcat.
+  alias cat="batcat --paging=never"
+  alias less="batcat"
+fi
+
+# Machine-specific aliases, not tracked in this repo.
+if [[ -f ~/.aliases.local ]]; then
+  source ~/.aliases.local
+fi

@@ -1,0 +1,12 @@
+# Pretty print JSON from a file or a string.
+pjson() {
+  if [ $# -gt 0 ]; then
+    for arg in "$@"; do
+      if [ -f "$arg" ]; then
+        python3 -m json.tool < "$arg"
+      else
+        echo "$arg" | python3 -m json.tool
+      fi
+    done
+  fi
+}
