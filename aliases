@@ -8,6 +8,7 @@ alias v="$VISUAL"
 alias path='echo -e ${PATH//:/\\n}'
 
 # Easier navigation: ..., ...., ....., and -
+alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."

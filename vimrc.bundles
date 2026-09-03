@@ -18,8 +18,9 @@ call plug#begin('~/.vim/bundle')
 Plug 'christoomey/vim-run-interactive'
 
 " Prefer the Homebrew fzf. Otherwise let vim-plug fetch the binary.
-if executable("brew")
-  let g:brew_fzf_path = trim(system("brew --prefix fzf"))
+" $HOMEBREW_PREFIX is set by `brew shellenv`; avoids forking brew on every launch.
+if exists("$HOMEBREW_PREFIX")
+  let g:brew_fzf_path = $HOMEBREW_PREFIX . "/opt/fzf"
 endif
 
 if exists("g:brew_fzf_path") && isdirectory(g:brew_fzf_path)

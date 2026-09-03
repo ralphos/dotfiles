@@ -4,19 +4,32 @@
 set -e
 
 if command -v brew > /dev/null 2>&1; then
-  brew bundle --global
+  # ~/.Brewfile only exists after rcup has run; fall back to the repo copy.
+  brewfile="$HOME/.Brewfile"
+  [ -f "$brewfile" ] || brewfile="$HOME/dotfiles/Brewfile"
+  brew bundle --file "$brewfile"
   exit 0
 fi
 
 if command -v apt-get > /dev/null 2>&1; then
   sudo apt-get update
   # eza is not in Ubuntu 24.04's default repos; the gierens.de repo carries it.
-  sudo apt-get install -y rcm bat fzf tmux ripgrep silversearcher-ag gpg
+  # git, curl and vim: the git hooks and rcup's post-up hook need them.
+  # universal-ctags: git_template/hooks/ctags runs on every commit and checkout.
+  sudo apt-get install -y rcm git curl vim universal-ctags \
+    bat fzf tmux ripgrep silversearcher-ag gpg
   if ! command -v eza > /dev/null 2>&1; then
-    sudo mkdir -p /etc/apt/keyrings
-    wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc \
-      | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
-    echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" \
+    keyring=/etc/apt/keyrings/gierens.gpg
+    if [ ! -f "$keyring" ]; then
+      # Download first and check it, so a failed fetch cannot leave an empty
+      # keyring behind. --batch --yes keeps gpg from prompting on a re-run.
+      tmp=$(mktemp)
+      wget -qO "$tmp" https://raw.githubusercontent.com/eza-community/eza/main/deb.asc
+      sudo mkdir -p /etc/apt/keyrings
+      sudo gpg --batch --yes --dearmor -o "$keyring" "$tmp"
+      rm -f "$tmp"
+    fi
+    echo "deb [signed-by=$keyring] http://deb.gierens.de stable main" \
       | sudo tee /etc/apt/sources.list.d/gierens.list > /dev/null
     sudo apt-get update
     sudo apt-get install -y eza

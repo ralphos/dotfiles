@@ -16,6 +16,11 @@ Install
 pick up new files. Use `rcup -f` to replace files that already exist, such as
 the stock `~/.bashrc` on a fresh Ubuntu box.
 
+Caution: `rcup -f` wins every collision. Before running it on a machine that
+already has customised `~/.bashrc`, `~/.profile` or `~/.gitconfig`, move
+anything machine-specific from them into `~/.bashenv.local` and
+`~/.gitconfig.local` first (see below), or it is lost.
+
 `setup-shell-tools` installs the command line tools these files expect. It uses
 Homebrew on macOS and apt on Debian or Ubuntu.
 
@@ -51,6 +56,11 @@ Anything that belongs to one machine only goes in a `.local` file. These are
 ones, so it is the place for PATH entries and tokens on a bash machine. Once
 `~/.bash_profile` exists, bash no longer reads `~/.profile`, so move anything
 from there into `~/.bashenv.local`.
+
+`~/.gitconfig` is a symlink into this repo, so `git config --global ...` (and
+tools such as `gh auth setup-git`) write into the tracked file. For
+machine-specific git settings use `git config --file ~/.gitconfig.local ...`
+instead.
 
 Credits
 -------

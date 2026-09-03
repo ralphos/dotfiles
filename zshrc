@@ -6,6 +6,10 @@ done
 # extra files in ~/.zsh/configs/pre , ~/.zsh/configs , and ~/.zsh/configs/post
 # these are loaded first, second, and third, respectively.
 _load_settings() {
+  # The globs below use the `~` exclusion operator, which needs extendedglob.
+  # options.zsh turns it on, but that file is loaded BY this function, so set
+  # it locally here or the pre/ and post/ loops match nothing.
+  setopt local_options extendedglob
   _dir="$1"
   if [ -d "$_dir" ]; then
     if [ -d "$_dir/pre" ]; then
@@ -33,17 +37,6 @@ _load_settings() {
   fi
 }
 _load_settings "$HOME/.zsh/configs"
-
-# Homebrew lives in /opt/homebrew on Apple Silicon and /usr/local on Intel.
-# Choose by architecture, not by directory existence: an old, unused
-# /opt/homebrew tree can otherwise shadow the working install.
-if [ "$(uname -m)" = "arm64" ] && [ -x /opt/homebrew/bin/brew ]; then
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-elif [ -x /usr/local/bin/brew ]; then
-  eval "$(/usr/local/bin/brew shellenv)"
-elif [ -x /home/linuxbrew/.linuxbrew/bin/brew ]; then
-  eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-fi
 
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 

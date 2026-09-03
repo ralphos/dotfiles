@@ -181,7 +181,7 @@ set complete+=kspell
 set diffopt+=vertical
 
 " Dark colour scheme, to match the Vesper terminal theme
-colorscheme jellybeans
+silent! colorscheme jellybeans
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

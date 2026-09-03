@@ -35,7 +35,7 @@ palette = 'vesper'
 surface0 = "#333333"   # left cap: os icon + username
 peach = "#ffc799"      # directory. The one bright warm block.
 green = "#99ffe4"      # git branch + status (Vesper mint)
-teal = "#2a2a2a"       # language versions, peach text on dark
+teal = "#2a2a2a"       # language icons, peach on dark. No version: `ruby -v` via a shim costs ~350ms per prompt.
 blue = "#222222"       # docker context
 purple = "#1c1c1c"     # time; right cap fades toward the #101010 background
 mantle = "#101010"     # ink on peach
@@ -93,22 +93,22 @@ format = '[[($all_status$ahead_behind )](fg:base bg:green)]($style)'
 [ruby]
 symbol = ""
 style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:peach bg:teal)]($style)'
+format = '[[ $symbol ](fg:peach bg:teal)]($style)'
 
 [nodejs]
 symbol = ""
 style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:peach bg:teal)]($style)'
+format = '[[ $symbol ](fg:peach bg:teal)]($style)'
 
 [golang]
 symbol = ""
 style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:peach bg:teal)]($style)'
+format = '[[ $symbol ](fg:peach bg:teal)]($style)'
 
 [python]
 symbol = ""
 style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:peach bg:teal)]($style)'
+format = '[[ $symbol ](fg:peach bg:teal)]($style)'
 
 [docker_context]
 symbol = ""
