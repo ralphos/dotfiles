@@ -45,6 +45,12 @@ Anything that belongs to one machine only goes in a `.local` file. These are
     ~/.aliases.local        ~/.gitconfig.local
     ~/.zshrc.local          ~/.tmux.conf.local
     ~/.vimrc.local          ~/.vimrc.bundles.local
+    ~/.bashenv.local        ~/.bashrc.local
+
+`~/.bashenv.local` is read by every bash shell, including non-interactive
+ones, so it is the place for PATH entries and tokens on a bash machine. Once
+`~/.bash_profile` exists, bash no longer reads `~/.profile`, so move anything
+from there into `~/.bashenv.local`.
 
 Credits
 -------

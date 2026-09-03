@@ -1,7 +1,16 @@
 # bash entry point for machines without zsh as the login shell (the Ubuntu box).
 # Kept deliberately thin: it reuses the same files zsh uses.
 
-# Stock Ubuntu bits worth keeping.
+# Environment for EVERY bash shell: login, interactive, and non-interactive
+# (`ssh box 'some command'`). Machine-specific PATH entries and tokens go in
+# ~/.bashenv.local, which is not tracked here. This must run before the
+# interactive check below, or non-interactive shells never see it.
+#
+# Note: once ~/.bash_profile exists, bash ignores ~/.profile entirely. Anything
+# that used to live in ~/.profile belongs in ~/.bashenv.local instead.
+[ -f ~/.bashenv.local ] && . ~/.bashenv.local
+
+# Stop here unless the shell is interactive.
 case $- in
   *i*) ;;
     *) return;;
